@@ -37,6 +37,8 @@ export function Navbar() {
 
   useEffect(() => {
     if (!menuOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setMenuOpen(false);
@@ -44,7 +46,10 @@ export function Navbar() {
       }
     }
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
   }, [menuOpen]);
 
   // Highlight the section currently in view.

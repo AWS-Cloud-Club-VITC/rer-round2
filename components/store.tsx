@@ -4,14 +4,16 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
-import type { Product } from "@/data/products";
+import { PRODUCTS, type Product } from "@/data/products";
 
 const THEME_KEY = "ecomart-theme";
+const CART_KEY = "ecomart-cart";
 
 export type CartLine = { product: Product; qty: number };
 export type Toast = { id: number; title: string; detail?: string; icon?: string };
@@ -79,6 +81,7 @@ function readTheme(): Theme {
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartLine[]>([]);
+  const [cartReady, setCartReady] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -94,6 +97,45 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   useLayoutEffect(() => {
     document.documentElement.setAttribute("data-theme", readTheme());
   }, []);
+
+  useEffect(() => {
+    let active = true;
+    let restored: CartLine[] = [];
+    try {
+      const stored = JSON.parse(window.localStorage.getItem(CART_KEY) ?? "[]") as Array<{
+        id: string;
+        qty: number;
+      }>;
+      restored = stored.flatMap(({ id, qty }) => {
+        const product = PRODUCTS.find((item) => item.id === id);
+        return product && Number.isFinite(qty) && qty > 0
+          ? [{ product, qty: Math.floor(qty) }]
+          : [];
+      });
+    } catch {
+      window.localStorage.removeItem(CART_KEY);
+    }
+    queueMicrotask(() => {
+      if (!active) return;
+      setCart(restored);
+      setCartReady(true);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!cartReady) return;
+    try {
+      window.localStorage.setItem(
+        CART_KEY,
+        JSON.stringify(cart.map(({ product, qty }) => ({ id: product.id, qty }))),
+      );
+    } catch {
+      /* Storage may be unavailable; the in-memory cart still works. */
+    }
+  }, [cart, cartReady]);
 
   const dismissToast = useCallback((id: number) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
@@ -131,17 +173,24 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   const setQty = useCallback((id: string, qty: number) => {
     setCart((prev) =>
-      qty <= 0
-        ? prev.filter((l) => l.product.id !== id)
-        : prev.map((l) => (l.product.id === id ? { ...l, qty } : l)),
+      prev.map((l) =>
+        l.product.id === id ? { ...l, qty: Math.max(1, qty) } : l,
+      ),
     );
   }, []);
 
-  const removeFromCart = useCallback((id: string) => {
-    setCart((prev) => prev.filter((l) => l.product.id !== id));
-  }, []);
+  const removeFromCart = useCallback(
+    (id: string) => {
+      setCart((prev) => prev.filter((l) => l.product.id !== id));
+      pushToast({ title: "Removed from cart.", icon: "cart" });
+    },
+    [pushToast],
+  );
 
-  const clearCart = useCallback(() => setCart([]), []);
+  const clearCart = useCallback(() => {
+    setCart([]);
+    pushToast({ title: "Cart cleared.", icon: "cart" });
+  }, [pushToast]);
 
   const toggleFavorite = useCallback(
     (product: Product) => {

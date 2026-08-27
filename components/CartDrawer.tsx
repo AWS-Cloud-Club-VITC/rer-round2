@@ -172,11 +172,12 @@ export function CartDrawer() {
                       <div className="flex items-center gap-1 rounded-full border border-line px-1">
                         <button
                           type="button"
+                          disabled={line.qty === 1}
                           onClick={() =>
                             setQty(line.product.id, line.qty - 1)
                           }
                           aria-label={`Decrease quantity of ${line.product.name}`}
-                          className="grid h-7 w-7 place-items-center rounded-full text-ink-soft transition-colors hover:bg-surface-2 active:scale-90"
+                          className="grid h-7 w-7 place-items-center rounded-full text-ink-soft transition-colors hover:bg-surface-2 active:scale-90 disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:bg-transparent"
                         >
                           <Minus width={14} height={14} />
                         </button>
@@ -246,8 +247,8 @@ export function CartDrawer() {
                 type="button"
                 onClick={() =>
                   pushToast({
-                    title: "This is a demo storefront",
-                    detail: "No checkout here — your cart stays on this page.",
+                    title: "Demo checkout — no payment will be processed.",
+                    detail: "Your cart remains available on this device.",
                     icon: "leaf",
                   })
                 }
@@ -261,6 +262,18 @@ export function CartDrawer() {
                 className="mt-2 h-10 w-full rounded-full text-[13px] font-medium text-muted transition-colors hover:text-rose-500"
               >
                 Clear cart
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setCartOpen(false);
+                  requestAnimationFrame(() =>
+                    document.getElementById("shop")?.scrollIntoView({ behavior: "smooth" }),
+                  );
+                }}
+                className="h-10 w-full rounded-full text-[13px] font-semibold text-brand transition-colors hover:bg-brand-soft"
+              >
+                Continue Shopping
               </button>
             </footer>
           </>

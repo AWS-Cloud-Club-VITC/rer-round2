@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { useStore } from "./store";
 import { Cart, Close, Leaf, Menu, Moon, Search, Sun } from "./Icons";
 
@@ -25,6 +26,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState("#home");
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -32,6 +34,18 @@ export function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
 
   // Highlight the section currently in view.
   useEffect(() => {
@@ -72,10 +86,10 @@ export function Navbar() {
         className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:h-[72px] sm:px-6 lg:px-8"
       >
         {/* Logo — hidden interaction: three quick clicks unlock Grove Mode */}
-        <button
-          type="button"
+        <Link
+          href="/#home"
           onClick={registerLogoClick}
-          aria-label="EcoMart home"
+          aria-label="Go to homepage"
           className="group flex shrink-0 items-center gap-2 rounded-xl px-1 py-1"
         >
           <span
@@ -88,7 +102,7 @@ export function Navbar() {
           <span className="text-[19px] font-semibold tracking-tight text-ink">
             Eco<span className="text-brand">Mart</span>
           </span>
-        </button>
+        </Link>
 
         {/* Desktop links */}
         <ul className="ml-4 hidden items-center gap-1 lg:flex">
@@ -141,6 +155,7 @@ export function Navbar() {
               <html data-theme>, so nothing here depends on state the server
               cannot know — no hydration mismatch and no flash. */}
           <button
+            ref={menuButtonRef}
             type="button"
             onClick={toggleTheme}
             aria-label="Toggle dark mode"
@@ -219,7 +234,7 @@ export function Navbar() {
               <a
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className={`block rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
+                className={`flex min-h-11 items-center rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
                   active === link.href
                     ? "bg-brand-soft text-brand"
                     : "text-ink-soft hover:bg-surface-2"

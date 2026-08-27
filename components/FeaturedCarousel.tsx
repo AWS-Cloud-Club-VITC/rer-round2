@@ -20,6 +20,7 @@ export function FeaturedCarousel({
 
   return (
     <section
+      id="featured"
       aria-roledescription="carousel"
       aria-label="Featured sustainable picks"
       className="border-t border-line bg-surface-2/40 py-16 sm:py-20"

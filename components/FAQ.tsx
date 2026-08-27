@@ -31,11 +31,8 @@ export function FAQ() {
 
           <div className="mt-6 rounded-2xl border border-line bg-surface p-4">
             <p className="text-[13px] leading-relaxed text-muted">
-              Still unsure about something?{" "}
-              <span className="font-semibold text-brand">
-                hello@ecomart.example
-              </span>{" "}
-              reaches a real person within a day.
+              Start with the questions here, then inspect any product&apos;s leaf
+              badge for its carbon, materials, packaging and durability breakdown.
             </p>
           </div>
         </div>

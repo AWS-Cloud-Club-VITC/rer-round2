@@ -6,16 +6,25 @@ import { useStore } from "./store";
 
 const COLUMNS = [
   {
-    title: "Shop",
-    links: ["All products", "Home & Kitchen", "Personal Care", "Fashion", "Electronics"],
+    title: "Explore",
+    links: [
+      { label: "All products", href: "#shop" },
+      { label: "Featured picks", href: "#featured" },
+    ],
   },
   {
-    title: "Company",
-    links: ["Our story", "Eco rating method", "Impact report", "Partners", "Careers"],
+    title: "Learn",
+    links: [
+      { label: "Our impact", href: "#impact" },
+      { label: "Eco rating method", href: "#about" },
+    ],
   },
   {
-    title: "Support",
-    links: ["Help centre", "Shipping & returns", "Repair programme", "Contact us"],
+    title: "EcoMart",
+    links: [
+      { label: "About EcoMart", href: "#about" },
+      { label: "Back to top", href: "#home" },
+    ],
   },
 ];
 
@@ -29,15 +38,25 @@ export function Footer() {
   const { pushToast } = useStore();
   const [email, setEmail] = useState("");
   const [signedUp, setSignedUp] = useState(false);
+  const [error, setError] = useState("");
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!email.trim()) return;
+    const value = email.trim();
+    if (!value) {
+      setError("Enter an email address to join the list.");
+      return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(value)) {
+      setError("Enter a complete email address, such as name@domain.com.");
+      return;
+    }
+    setError("");
     setSignedUp(true);
     setEmail("");
     pushToast({
       title: "You're on the list 🌿",
-      detail: "Monthly impact notes, no spam.",
+      detail: "Demo complete — no address was sent or stored.",
       icon: "leaf",
     });
     setTimeout(() => setSignedUp(false), 3000);
@@ -58,18 +77,22 @@ export function Footer() {
             </p>
           </div>
 
-          <form onSubmit={onSubmit} className="flex flex-col gap-2 sm:flex-row">
+          <form onSubmit={onSubmit} noValidate className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
             <label htmlFor="newsletter-email" className="sr-only">
               Email address
             </label>
             <input
               id="newsletter-email"
               type="email"
-              required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="h-12 flex-1 rounded-full border border-line bg-canvas px-5 text-sm text-ink placeholder:text-muted transition-all duration-200 focus:border-brand focus:outline-none focus:ring-4 focus:ring-[var(--brand-ring)]"
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (error) setError("");
+              }}
+              placeholder="Email address"
+              aria-invalid={Boolean(error)}
+              aria-describedby={error ? "newsletter-error" : "newsletter-note"}
+              className={`h-12 min-w-0 flex-1 rounded-full border bg-canvas px-5 text-sm text-ink placeholder:text-muted transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-[var(--brand-ring)] ${error ? "border-rose-500" : "border-line focus:border-brand"}`}
             />
             <button
               type="submit"
@@ -91,6 +114,14 @@ export function Footer() {
                 </>
               )}
             </button>
+            <p id="newsletter-note" className="w-full px-2 text-[11.5px] text-muted">
+              Frontend demo only — your address is never sent or stored.
+            </p>
+            {error && (
+              <p id="newsletter-error" role="alert" className="w-full px-2 text-[12px] font-medium text-rose-600 dark:text-rose-400">
+                {error}
+              </p>
+            )}
           </form>
         </div>
 
@@ -129,13 +160,13 @@ export function Footer() {
               </h3>
               <ul className="mt-4 grid gap-2.5">
                 {col.links.map((link) => (
-                  <li key={link}>
+                  <li key={link.label}>
                     <a
-                      href="#shop"
-                      className="group inline-flex items-center gap-1.5 text-[13.5px] text-muted transition-colors duration-200 hover:text-brand"
+                      href={link.href}
+                      className="group inline-flex min-h-11 items-center gap-1.5 text-[13.5px] text-muted transition-colors duration-200 hover:text-brand"
                     >
                       <span className="h-px w-0 bg-brand transition-all duration-200 group-hover:w-3" />
-                      {link}
+                      {link.label}
                     </a>
                   </li>
                 ))}
@@ -147,12 +178,12 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col gap-3 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[12.5px] text-muted">
-            © 2026 EcoMart. A fictional storefront built for SDG 12 —
+            © {new Date().getFullYear()} EcoMart. A fictional storefront built for SDG 12 —
             Responsible Consumption and Production.
           </p>
           <p className="flex items-center gap-1.5 text-[12.5px] font-medium text-muted">
             <Leaf filled width={14} height={14} className="text-brand" />
-            Certified climate-neutral since 2023
+            Designed for responsible consumption
           </p>
         </div>
       </div>

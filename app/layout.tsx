@@ -3,6 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { InlineScript } from "@/components/InlineScript";
 import "./globals.css";
 
+const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -14,9 +18,27 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EcoMart — Shop Better. Live Sustainably.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "EcoMart | Shop Better. Live Sustainably.",
+    template: "%s | EcoMart",
+  },
   description:
     "A marketplace for everyday products that are actually better for the planet. Every listing is scored out of five leaves on carbon, materials, packaging and durability.",
+  applicationName: "EcoMart",
+  openGraph: {
+    type: "website",
+    siteName: "EcoMart",
+    title: "EcoMart | Shop Better. Live Sustainably.",
+    description:
+      "Explore everyday products scored clearly on carbon, materials, packaging and durability.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "EcoMart | Shop Better. Live Sustainably.",
+    description:
+      "Explore everyday products scored clearly on carbon, materials, packaging and durability.",
+  },
 };
 
 // Runs synchronously during HTML parsing so the stored theme is applied before

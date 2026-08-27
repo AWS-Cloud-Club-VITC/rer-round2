@@ -230,7 +230,7 @@ export function ProductModal({
 
             {/* Actions */}
             <div className="sticky bottom-0 mt-auto border-t border-line bg-surface/95 p-5 backdrop-blur sm:px-7">
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3 sm:flex-nowrap">
                 <div className="flex h-12 items-center gap-1 rounded-full border border-line bg-surface px-1.5">
                   <button
                     type="button"
@@ -262,7 +262,7 @@ export function ProductModal({
                     addToCart(product, qty);
                     onClose();
                   }}
-                  className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-brand px-5 text-sm font-semibold text-white shadow-lg shadow-[var(--brand-ring)] transition-all duration-200 hover:bg-brand-strong active:scale-[0.97]"
+                  className="order-3 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-brand px-5 text-sm font-semibold text-white shadow-lg shadow-[var(--brand-ring)] transition-all duration-200 hover:bg-brand-strong active:scale-[0.97] sm:order-none sm:w-auto sm:flex-1"
                 >
                   <Cart width={17} height={17} />
                   Add to Cart · ${(product.price * qty).toFixed(2)}

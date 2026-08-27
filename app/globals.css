@@ -241,6 +241,18 @@ body {
   color: var(--ink);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+main,
+section,
+footer {
+  min-width: 0;
 }
 
 /* Section headings and hero display type */

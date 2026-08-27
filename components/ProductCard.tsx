@@ -84,19 +84,26 @@ export function ProductCard({
           {product.tagline}
         </p>
 
-        <div className="mt-4 flex items-center justify-between gap-3 pt-1">
+        <div className="relative z-10 mt-4 flex flex-wrap items-center gap-2 pt-1">
           <span className="text-lg font-semibold tabular-nums text-ink">
             ${product.price.toFixed(2)}
           </span>
 
           <button
             type="button"
+            onClick={() => onOpen(product)}
+            className="ml-auto inline-flex h-10 items-center rounded-full border border-line px-3.5 text-[13px] font-semibold text-ink-soft transition-all duration-200 hover:border-brand hover:text-brand active:scale-95"
+          >
+            Details
+          </button>
+          <button
+            type="button"
             onClick={() => addToCart(product)}
             aria-label={`Add ${product.name} to cart`}
-            className="relative z-10 inline-flex h-10 items-center gap-1.5 rounded-full bg-surface-2 px-4 text-[13px] font-semibold text-ink transition-all duration-200 hover:bg-brand hover:text-white active:scale-95"
+            className="inline-flex h-10 items-center gap-1.5 rounded-full bg-surface-2 px-3.5 text-[13px] font-semibold text-ink transition-all duration-200 hover:bg-brand hover:text-white active:scale-95"
           >
             <Cart width={15} height={15} />
-            <span className="hidden sm:inline">Add</span>
+            <span>Add</span>
           </button>
         </div>
       </div>

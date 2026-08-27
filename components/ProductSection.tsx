@@ -37,7 +37,8 @@ export function ProductSection({
         p.category.toLowerCase().includes(q) ||
         p.tagline.toLowerCase().includes(q) ||
         p.description.toLowerCase().includes(q) ||
-        p.materials.some((m) => m.toLowerCase().includes(q));
+        p.materials.some((m) => m.toLowerCase().includes(q)) ||
+        Object.values(p.impact).some((value) => value.toLowerCase().includes(q));
 
       return (
         matchesQuery &&
@@ -254,7 +255,7 @@ export function ProductSection({
               <Search width={24} height={24} />
             </div>
             <h3 className="mt-5 text-lg font-semibold text-ink">
-              Nothing matches those filters
+              No sustainable swaps found.
             </h3>
             <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-muted">
               {query.trim()
@@ -266,7 +267,7 @@ export function ProductSection({
               onClick={resetAll}
               className="mt-6 inline-flex h-11 items-center rounded-full bg-brand px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-brand-strong active:scale-95"
             >
-              Reset filters
+              Clear filters
             </button>
           </div>
         )}

@@ -44,18 +44,18 @@ export function Footer() {
     e.preventDefault();
     const value = email.trim();
     if (!value) {
-      setError("Enter an email address to join the list.");
+      setError("Enter your email address.");
       return;
     }
     if (!/^\S+@\S+\.\S+$/.test(value)) {
-      setError("Enter a complete email address, such as name@domain.com.");
+      setError("Enter a valid email address.");
       return;
     }
     setError("");
     setSignedUp(true);
     setEmail("");
     pushToast({
-      title: "You're on the list 🌿",
+      title: "You're on the list 🌱",
       detail: "Demo complete — no address was sent or stored.",
       icon: "leaf",
     });

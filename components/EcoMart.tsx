@@ -14,6 +14,7 @@ import { ImpactSection } from "./ImpactSection";
 import { Navbar } from "./Navbar";
 import { ProductModal } from "./ProductModal";
 import { ProductSection } from "./ProductSection";
+import { RatingModal } from "./RatingModal";
 import { StoreProvider } from "./store";
 import { Toasts } from "./Toasts";
 
@@ -42,6 +43,7 @@ function Shell() {
         onClose={() => setSelected(null)}
       />
       <CartDrawer />
+      <RatingModal />
       <Toasts />
       <GroveOverlay />
     </>

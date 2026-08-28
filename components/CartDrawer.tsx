@@ -17,7 +17,7 @@ export function CartDrawer() {
     setQty,
     removeFromCart,
     clearCart,
-    pushToast,
+    checkout,
   } = useStore();
 
   useEffect(() => {
@@ -245,13 +245,7 @@ export function CartDrawer() {
 
               <button
                 type="button"
-                onClick={() =>
-                  pushToast({
-                    title: "Demo checkout — no payment will be processed.",
-                    detail: "Your cart remains available on this device.",
-                    icon: "leaf",
-                  })
-                }
+                onClick={checkout}
                 className="mt-4 h-12 w-full rounded-full bg-brand text-sm font-semibold text-white shadow-lg shadow-[var(--brand-ring)] transition-all duration-200 hover:bg-brand-strong active:scale-[0.98]"
               >
                 Checkout

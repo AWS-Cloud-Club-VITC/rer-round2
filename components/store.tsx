@@ -29,6 +29,11 @@ type Store = {
   setQty: (id: string, qty: number) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
+  checkout: () => boolean;
+
+  purchasedItems: CartLine[];
+  ratingOpen: boolean;
+  closeRating: () => void;
 
   favorites: string[];
   toggleFavorite: (product: Product) => void;
@@ -84,6 +89,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [cartReady, setCartReady] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [purchasedItems, setPurchasedItems] = useState<CartLine[]>([]);
+  const [ratingOpen, setRatingOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [groveMode, setGroveMode] = useState(false);
@@ -192,6 +199,25 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     pushToast({ title: "Cart cleared.", icon: "cart" });
   }, [pushToast]);
 
+  const checkout = useCallback(() => {
+    if (cart.length === 0) return false;
+
+    // Snapshot each unique cart line before clearing so the optional rating
+    // step remains independent of the now-empty, persisted cart.
+    setPurchasedItems(cart.map((line) => ({ ...line })));
+    setCart([]);
+    setCartOpen(false);
+    pushToast({
+      title: "Order placed successfully!",
+      detail: "Your sustainable swaps are on their way.",
+      icon: "check",
+    });
+    setRatingOpen(true);
+    return true;
+  }, [cart, pushToast]);
+
+  const closeRating = useCallback(() => setRatingOpen(false), []);
+
   const toggleFavorite = useCallback(
     (product: Product) => {
       setFavorites((prev) => {
@@ -271,6 +297,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       setQty,
       removeFromCart,
       clearCart,
+      checkout,
+      purchasedItems,
+      ratingOpen,
+      closeRating,
       favorites,
       toggleFavorite,
       isFavorite,
@@ -294,6 +324,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       setQty,
       removeFromCart,
       clearCart,
+      checkout,
+      purchasedItems,
+      ratingOpen,
+      closeRating,
       favorites,
       toggleFavorite,
       isFavorite,

@@ -83,9 +83,17 @@ function RatingDialog() {
           <button
             ref={closeButton}
             type="button"
-            onClick={closeRating}
+            onPointerDown={(event) => {
+              event.stopPropagation();
+              closeRating();
+            }}
+            onClick={(event) => {
+              // Keyboard activation fires click without pointerdown.
+              event.stopPropagation();
+              closeRating();
+            }}
             aria-label="Close rating popup"
-            className="ml-auto grid h-9 w-9 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-ink active:scale-90"
+            className="relative z-10 ml-auto grid h-10 w-10 shrink-0 touch-manipulation place-items-center rounded-full border border-transparent text-muted transition-colors hover:border-line hover:bg-surface-2 hover:text-ink active:scale-90"
           >
             <Close width={17} height={17} />
           </button>

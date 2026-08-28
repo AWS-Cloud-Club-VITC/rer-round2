@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useStore } from "./store";
-import { Cart, Close, Leaf, Menu, Moon, Search, Sun } from "./Icons";
+import { Cart, Close, Heart, Leaf, Menu, Moon, Search, Sun } from "./Icons";
 
 const LINKS = [
   { href: "#home", label: "Home" },
@@ -15,6 +15,7 @@ const LINKS = [
 export function Navbar() {
   const {
     cartCount,
+    favorites,
     setCartOpen,
     toggleTheme,
     query,
@@ -170,6 +171,19 @@ export function Navbar() {
             <Moon width={18} height={18} className="dark:hidden" />
             <Sun width={18} height={18} className="hidden dark:block" />
           </button>
+
+          {favorites.length > 0 && (
+            <a
+              href="#favourites"
+              aria-label={`View ${favorites.length} favourite${favorites.length === 1 ? "" : "s"}`}
+              className="relative hidden h-10 w-10 place-items-center rounded-full border border-line bg-surface text-rose-500 transition-all duration-200 hover:border-rose-400 hover:bg-rose-50 active:scale-90 md:grid dark:hover:bg-rose-500/10"
+            >
+              <Heart filled width={18} height={18} />
+              <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-rose-500 px-1 text-[11px] font-bold tabular-nums text-white ring-2 ring-canvas">
+                {favorites.length}
+              </span>
+            </a>
+          )}
 
           {/* Cart */}
           <button

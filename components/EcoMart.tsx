@@ -4,7 +4,9 @@ import { useState } from "react";
 import type { Product } from "@/data/products";
 import { CartDrawer } from "./CartDrawer";
 import { FAQ } from "./FAQ";
+import { FavoritesSection } from "./FavoritesSection";
 import { FeaturedCarousel } from "./FeaturedCarousel";
+import { FlashSaleTimer } from "./FlashSaleTimer";
 import { Footer } from "./Footer";
 import { GroveOverlay } from "./GroveOverlay";
 import { Hero } from "./Hero";
@@ -24,7 +26,9 @@ function Shell() {
       <Navbar />
       <main className="flex-1">
         <Hero />
+        <FlashSaleTimer />
         <ProductSection onOpenProduct={setSelected} />
+        <FavoritesSection onOpenProduct={setSelected} />
         <FeaturedCarousel onOpenProduct={setSelected} />
         <ImpactSection />
         <FAQ />

@@ -90,7 +90,9 @@ export function EcoBadge({
         <span
           id={id}
           role="tooltip"
-          className="animate-pop-in absolute bottom-[calc(100%+8px)] left-0 z-30 w-[min(14rem,calc(100vw-2rem))] rounded-2xl border border-line bg-surface p-3 text-left shadow-lift sm:left-1/2 sm:-translate-x-1/2"
+          // Anchored to the badge's left edge (not centred) so the panel opens
+          // into the card and never spills past its edge or the viewport.
+          className="animate-pop-in absolute bottom-[calc(100%+8px)] left-0 z-30 w-[min(14rem,calc(100vw-2.5rem))] rounded-2xl border border-line bg-surface p-3 text-left shadow-lift"
         >
           <span className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
             Eco score breakdown

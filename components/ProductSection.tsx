@@ -122,19 +122,25 @@ export function ProductSection({
 
         {/* Filter bar */}
         <div className="mt-8 rounded-3xl border border-line bg-surface p-4 shadow-card sm:p-5">
-          <div className="mb-4 flex items-center gap-2 border-b border-line pb-3">
+          {/* The "Clear all" control stays mounted and is hidden with
+              visibility, not unmounted. Mounting it on the first keystroke grew
+              this row by 10px and shifted the whole grid down mid-search.
+              `invisible` also keeps it out of the tab order and the a11y tree. */}
+          <div className="mb-4 flex min-h-[30px] items-center gap-2 border-b border-line pb-3">
             <Sliders width={16} height={16} className="text-brand" />
             <span className="text-sm font-semibold text-ink">Refine</span>
-            {filtersActive && (
-              <button
-                type="button"
-                onClick={resetAll}
-                className="ml-auto inline-flex items-center gap-1 rounded-full bg-surface-2 px-3 py-1.5 text-[12px] font-semibold text-ink-soft transition-colors hover:bg-brand hover:text-white"
-              >
-                <Close width={13} height={13} />
-                Clear all
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={resetAll}
+              className={`ml-auto inline-flex items-center gap-1 rounded-full bg-surface-2 px-3 py-1.5 text-[12px] font-semibold text-ink-soft transition-all duration-200 hover:bg-brand hover:text-white ${
+                filtersActive
+                  ? "visible opacity-100"
+                  : "invisible opacity-0"
+              }`}
+            >
+              <Close width={13} height={13} />
+              Clear all
+            </button>
           </div>
 
           <div className="grid gap-4 lg:grid-cols-12">

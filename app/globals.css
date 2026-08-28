@@ -233,7 +233,12 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5.5rem;
+  /* No scroll-padding-top here on purpose. It applies to EVERY scroll-into-view
+     the browser performs, including moving the caret of a focused input into
+     view. The navbar search sits in a sticky header ~14px from the top, so the
+     required clearance could never be satisfied — scrolling up moved the header
+     too — and the page crept upward on every keystroke. Section anchors get
+     their offset from scroll-mt-24 on each <section> instead. */
 }
 
 body {

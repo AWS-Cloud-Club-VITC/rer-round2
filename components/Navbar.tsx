@@ -72,11 +72,15 @@ export function Navbar() {
     return () => observer.disconnect();
   }, []);
 
-  function searchTo(value: string) {
-    setQuery(value);
-    if (value.trim()) {
-      document.getElementById("shop")?.scrollIntoView({ block: "start" });
-    }
+  // Typing only filters — it never moves the page. Jumping to the results is
+  // bound to Enter instead, so the viewport only moves when the user asks.
+  function submitSearch(event: React.FormEvent) {
+    event.preventDefault();
+    setMenuOpen(false);
+    if (!query.trim()) return;
+    document
+      .getElementById("shop")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   return (
@@ -135,7 +139,11 @@ export function Navbar() {
         </ul>
 
         {/* Desktop search */}
-        <div className="ml-auto hidden min-w-0 flex-1 justify-end md:flex lg:max-w-xs">
+        <form
+          role="search"
+          onSubmit={submitSearch}
+          className="ml-auto hidden min-w-0 flex-1 justify-end md:flex lg:max-w-xs"
+        >
           <label htmlFor="nav-search" className="sr-only">
             Search products
           </label>
@@ -149,12 +157,12 @@ export function Navbar() {
               id="nav-search"
               type="search"
               value={query}
-              onChange={(e) => searchTo(e.target.value)}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder="Search products…"
               className="h-10 w-full rounded-full border border-line bg-surface pl-9 pr-3 text-sm text-ink placeholder:text-muted transition-all duration-200 focus:border-brand focus:outline-none focus:ring-4 focus:ring-[var(--brand-ring)]"
             />
           </div>
-        </div>
+        </form>
 
         <div className="ml-auto flex items-center gap-1 md:ml-2">
           {/* Theme toggle. Both icons are rendered and CSS picks one from
@@ -232,7 +240,7 @@ export function Navbar() {
         <label htmlFor="mobile-search" className="sr-only">
           Search products
         </label>
-        <div className="relative mb-3 md:hidden">
+        <form role="search" onSubmit={submitSearch} className="relative mb-3 md:hidden">
           <Search
             width={16}
             height={16}
@@ -242,11 +250,11 @@ export function Navbar() {
             id="mobile-search"
             type="search"
             value={query}
-            onChange={(e) => searchTo(e.target.value)}
+            onChange={(e) => setQuery(e.target.value)}
             placeholder="Search products…"
             className="h-11 w-full rounded-full border border-line bg-surface pl-9 pr-3 text-sm text-ink placeholder:text-muted focus:border-brand focus:outline-none"
           />
-        </div>
+        </form>
         <ul className="grid gap-1">
           {LINKS.map((link) => (
             <li key={link.href}>

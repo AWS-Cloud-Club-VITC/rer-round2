@@ -18,14 +18,19 @@ export function ProductCard({
 
   return (
     <article
-      className={`tint-${product.tint} group relative flex flex-col overflow-hidden rounded-3xl border border-line bg-surface shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:border-line-strong hover:shadow-lift focus-within:-translate-y-1.5 focus-within:shadow-lift`}
+      // hover/focus z-index lifts the active card above its siblings so the eco
+      // tooltip is never painted under the next card in the grid.
+      className={`tint-${product.tint} group relative z-0 flex flex-col rounded-3xl border border-line bg-surface shadow-card transition-all duration-300 hover:z-20 hover:-translate-y-1.5 hover:border-line-strong hover:shadow-lift focus-within:z-20 focus-within:-translate-y-1.5 focus-within:shadow-lift`}
     >
-      {/* Artwork */}
-      <div className="art-panel relative aspect-4/3 overflow-hidden">
-        <ProductArt
-          art={product.art}
-          className="absolute left-1/2 top-1/2 h-[62%] w-[62%] -translate-x-1/2 -translate-y-1/2 transition-transform duration-500 ease-out group-hover:scale-110 group-hover:-rotate-3"
-        />
+      {/* Artwork. Only the inner wrapper clips, so the eco tooltip below can
+          overflow the card instead of being cut off by the panel. */}
+      <div className="relative aspect-4/3">
+        <div className="art-panel absolute inset-0 overflow-hidden rounded-t-3xl">
+          <ProductArt
+            art={product.art}
+            className="absolute left-1/2 top-1/2 h-[62%] w-[62%] -translate-x-1/2 -translate-y-1/2 transition-transform duration-500 ease-out group-hover:scale-110 group-hover:-rotate-3"
+          />
+        </div>
 
         {product.badge && (
           <span className="absolute left-3 top-3 rounded-full bg-ink px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-canvas">

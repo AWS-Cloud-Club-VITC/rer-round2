@@ -220,20 +220,22 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   const toggleFavorite = useCallback(
     (product: Product) => {
-      setFavorites((prev) => {
-        const has = prev.includes(product.id);
-        pushToast({
-          title: has
-            ? `Removed from favourites`
-            : `${product.name} saved to favourites`,
-          icon: has ? "heart-off" : "heart",
-        });
-        return has
+      // The toast must fire outside the updater: React double-invokes state
+      // updaters in Strict Mode, which would queue the notification twice.
+      const has = favorites.includes(product.id);
+      setFavorites((prev) =>
+        prev.includes(product.id)
           ? prev.filter((f) => f !== product.id)
-          : [...prev, product.id];
+          : [...prev, product.id],
+      );
+      pushToast({
+        title: has
+          ? "Removed from favourites"
+          : `${product.name} saved to favourites`,
+        icon: has ? "heart-off" : "heart",
       });
     },
-    [pushToast],
+    [favorites, pushToast],
   );
 
   const isFavorite = useCallback(

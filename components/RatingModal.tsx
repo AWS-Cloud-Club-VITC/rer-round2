@@ -138,7 +138,7 @@ function RatingDialog() {
             <Check width={16} height={16} />
             Submit {purchasedItems.length === 1 ? "Rating" : "Ratings"}
           </button>
-          <p className="mt-2 text-center text-[11px] text-muted">Optional — close anytime to skip.</p>
+          
         </footer>
       </section>
     </div>

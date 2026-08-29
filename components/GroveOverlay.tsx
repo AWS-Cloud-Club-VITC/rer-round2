@@ -21,7 +21,7 @@ const LEAVES = [
 
 /** Hidden interaction #1 — the leaf burst that plays when Grove Mode unlocks. */
 export function GroveOverlay() {
-  const { groveMode } = useStore();
+  const { groveMode, groveTrees } = useStore();
   if (!groveMode) return null;
 
   return (
@@ -29,6 +29,13 @@ export function GroveOverlay() {
       aria-hidden
       className="pointer-events-none fixed inset-0 z-[100] overflow-hidden"
     >
+      <div className="animate-pop-in absolute left-1/2 top-5 -translate-x-1/2 rounded-full border border-brand/20 bg-surface/95 px-4 py-2 shadow-lift backdrop-blur">
+        <span className="flex items-center gap-2 text-[12px] font-semibold text-ink">
+          <Leaf filled width={15} height={15} className="text-brand" />
+          Grove Mode · <span className="tabular-nums text-brand">{groveTrees}</span>
+          {" "}tree{groveTrees === 1 ? "" : "s"} planted
+        </span>
+      </div>
       {LEAVES.map((leaf, i) => (
         <span
           key={i}

@@ -197,6 +197,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setCartOpen(true)}
+            onMouseEnter={() => setCartOpen(true)}
             aria-label={`Open cart, ${cartCount} item${cartCount === 1 ? "" : "s"}`}
             className="relative grid h-10 w-10 place-items-center rounded-full border border-line bg-surface text-ink-soft transition-all duration-200 hover:border-brand hover:text-brand active:scale-90"
           >

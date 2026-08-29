@@ -46,37 +46,37 @@ export function FlashSaleTimer() {
   return (
     <section
       aria-label="Flash sale"
-      className="border-y border-brand-strong/15 bg-brand text-white"
+      className="border-y border-[#25352d] bg-[#18221d] text-[#edf3ee]"
     >
-      <div className="mx-auto flex max-w-7xl flex-col items-center gap-5 px-4 py-5 sm:px-6 md:flex-row md:justify-between lg:px-8">
-        <div className="flex items-center gap-3 text-center md:text-left">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/15">
-            <Sparkle width={19} height={19} />
+      <div className="mx-auto grid max-w-7xl gap-4 px-4 py-4 sm:px-6 md:grid-cols-[minmax(0,1fr)_auto_auto] md:items-center lg:px-8">
+        <div className="flex min-w-0 items-center gap-3">
+          <span className="grid h-10 w-10 shrink-0 place-items-center border border-[#5c7165] bg-[#223128] text-[#b4d5bd] shadow-inner">
+            <Sparkle width={17} height={17} />
           </span>
-          <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-white/75">
-              Today only
+          <div className="min-w-0">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-[#9ab5a0]">
+              Platform 12 · departure today
             </p>
-            <p className="mt-0.5 text-base font-semibold sm:text-lg">
-              Flash sale: save 20% on low-waste essentials
+            <p className="mt-1 truncate text-sm font-semibold tracking-tight text-white sm:text-base">
+              LOW-WASTE EXPRESS <span className="mx-1 text-[#729a7c]">→</span> 20% OFF ESSENTIALS
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2" aria-label="Sale ends at midnight">
+        <div className="flex items-center justify-center gap-1.5 font-mono" aria-label="Sale ends at midnight">
           {units.map((unit, index) => (
-            <div key={unit.label} className="flex items-center gap-2">
-              <div className="min-w-12 rounded-lg border border-white/20 bg-black/10 px-2.5 py-1.5 text-center shadow-sm">
-                <span className="block text-lg font-bold leading-none tabular-nums">
+            <div key={unit.label} className="flex items-center gap-1.5">
+              <div className="min-w-13 border border-[#465a4d] bg-[#0d130f] px-2 py-1.5 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+                <span key={unit.value} className="animate-pop-in block text-lg font-bold leading-none tabular-nums tracking-[0.12em] text-[#e5f2e7]">
                   {unit.value}
                 </span>
-                <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[0.12em] text-white/65">
+                <span className="mt-1 block text-[8px] font-bold uppercase tracking-[0.12em] text-[#829987]">
                   {unit.label}
                 </span>
               </div>
               {index < units.length - 1 && (
-                <span aria-hidden className="text-lg font-bold text-white/70">
-                  :
+                <span aria-hidden className="-mt-3 text-base font-bold text-[#66806d]">
+                  •
                 </span>
               )}
             </div>
@@ -85,10 +85,10 @@ export function FlashSaleTimer() {
 
         <a
           href="#shop"
-          className="group inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-[13px] font-bold text-brand transition-transform hover:scale-[1.03] active:scale-95"
+          className="group justify-self-center border border-[#87ac90] bg-[#dceadd] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#193720] transition-colors hover:bg-white md:justify-self-auto"
         >
-          Shop the sale
-          <ArrowRight width={15} height={15} className="transition-transform group-hover:translate-x-0.5" />
+          Board now
+          <ArrowRight width={14} height={14} className="inline-block transition-transform group-hover:translate-x-0.5" />
         </a>
       </div>
     </section>

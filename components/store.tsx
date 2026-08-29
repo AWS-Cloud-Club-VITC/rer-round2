@@ -60,6 +60,7 @@ type Store = {
 
   // Hidden interaction: three clicks on the logo unlocks "Grove Mode".
   groveMode: boolean;
+  groveTrees: number;
   registerLogoClick: () => void;
 };
 
@@ -94,6 +95,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [query, setQuery] = useState("");
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [groveMode, setGroveMode] = useState(false);
+  const [groveTrees, setGroveTrees] = useState(0);
 
   const toastId = useRef(0);
   const logoClicks = useRef(0);
@@ -171,11 +173,14 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       });
       pushToast({
         title: `${product.name} added to cart`,
-        detail: `Saves ${product.impact.co2} of CO₂`,
+        detail: groveMode
+          ? `Grove Mode planted ${qty} tree${qty === 1 ? "" : "s"} ✦`
+          : `Saves ${product.impact.co2} of CO₂`,
         icon: "cart",
       });
+      if (groveMode) setGroveTrees((count) => count + qty);
     },
-    [pushToast],
+    [groveMode, pushToast],
   );
 
   const setQty = useCallback((id: string, qty: number) => {
@@ -266,6 +271,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     if (logoClicks.current >= 3) {
       logoClicks.current = 0;
       setGroveMode(true);
+      setGroveTrees(1);
       pushToast({
         title: "Grove Mode unlocked 🌱",
         detail: "You just planted a tree in the EcoMart forest.",
@@ -315,6 +321,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       dismissToast,
       toggleTheme,
       groveMode,
+      groveTrees,
       registerLogoClick,
     }),
     [
@@ -340,6 +347,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       dismissToast,
       toggleTheme,
       groveMode,
+      groveTrees,
       registerLogoClick,
     ],
   );

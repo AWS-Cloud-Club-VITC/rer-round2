@@ -1,9 +1,48 @@
 "use client";
 
 import { useEffect } from "react";
-import { Cart, Close, Leaf, Minus, Plus, Trash, Truck } from "./Icons";
+import { Cart, Close, Leaf, Minus, Plus, Recycle, Sparkle, Trash, Truck } from "./Icons";
 import { ProductArt } from "./ProductArt";
 import { useStore } from "./store";
+
+function ImpactMeter({
+  icon: Icon,
+  value,
+  unit,
+  label,
+  target,
+}: {
+  icon: typeof Leaf;
+  value: number;
+  unit: string;
+  label: string;
+  target: number;
+}) {
+  const progress = Math.min(100, (value / target) * 100);
+
+  return (
+    <div className="flex min-w-0 items-center gap-2.5">
+      <span
+        className="grid h-11 w-11 shrink-0 place-items-center rounded-full p-[3px]"
+        style={{
+          background: `conic-gradient(var(--brand) ${progress}%, var(--surface-3) 0)`,
+        }}
+      >
+        <span className="grid h-full w-full place-items-center rounded-full bg-surface text-brand">
+          <Icon width={15} height={15} />
+        </span>
+      </span>
+      <span className="min-w-0">
+        <span className="block truncate text-[13px] font-bold tabular-nums text-ink">
+          {value.toFixed(value < 10 ? 1 : 0)} {unit}
+        </span>
+        <span className="block truncate text-[10px] font-semibold uppercase tracking-[0.1em] text-muted">
+          {label}
+        </span>
+      </span>
+    </div>
+  );
+}
 
 export function CartDrawer() {
   const {
@@ -39,6 +78,14 @@ export function CartDrawer() {
   // Rough CO₂ figure from each line's stated saving — keeps the cart on-theme.
   const co2 = cart.reduce(
     (sum, line) => sum + parseFloat(line.product.impact.co2) * line.qty,
+    0,
+  );
+  const plastic = cart.reduce(
+    (sum, line) => sum + parseFloat(line.product.impact.plastic) * line.qty,
+    0,
+  );
+  const water = cart.reduce(
+    (sum, line) => sum + parseFloat(line.product.impact.water) * line.qty,
     0,
   );
   const toFreeShipping = Math.max(0, 50 - subtotal);
@@ -219,6 +266,36 @@ export function CartDrawer() {
                 </span>{" "}
                 of CO₂
               </p>
+
+              <div className="mb-4 rounded-2xl border border-line bg-surface p-3">
+                <p className="mb-3 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.13em] text-ink">
+                  <Sparkle width={13} height={13} className="text-brand" />
+                  Your order impact
+                </p>
+                <div className="grid grid-cols-3 gap-2">
+                  <ImpactMeter
+                    icon={Leaf}
+                    value={co2}
+                    unit="kg"
+                    label="CO₂ saved"
+                    target={20}
+                  />
+                  <ImpactMeter
+                    icon={Recycle}
+                    value={plastic}
+                    unit="items"
+                    label="Plastic avoided"
+                    target={100}
+                  />
+                  <ImpactMeter
+                    icon={Sparkle}
+                    value={water}
+                    unit="L"
+                    label="Water saved"
+                    target={500}
+                  />
+                </div>
+              </div>
 
               <dl className="space-y-1.5 text-sm">
                 <div className="flex justify-between text-muted">

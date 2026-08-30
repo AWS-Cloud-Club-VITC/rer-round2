@@ -15,6 +15,9 @@ import { PRODUCTS, type Product } from "@/data/products";
 const THEME_KEY = "ecomart-theme";
 const CART_KEY = "ecomart-cart";
 
+/** How long Grove Mode stays active after the third logo click. */
+const GROVE_DURATION_MS = 10_000;
+
 export type CartLine = { product: Product; qty: number };
 export type Toast = { id: number; title: string; detail?: string; icon?: string };
 type Theme = "light" | "dark";
@@ -277,7 +280,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         detail: "You just planted a tree in the EcoMart forest.",
         icon: "leaf",
       });
-      setTimeout(() => setGroveMode(false), 4200);
+      // 10s gives enough room to notice the banner and then add something to
+      // the cart to see the Grove Mode toast and tree counter.
+      setTimeout(() => setGroveMode(false), GROVE_DURATION_MS);
     }
   }, [pushToast]);
 

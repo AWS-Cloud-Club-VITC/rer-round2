@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { InlineScript } from "@/components/InlineScript";
+import { PasswordGate } from "@/components/PasswordGate";
 import "./globals.css";
 
 const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
@@ -58,8 +59,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <InlineScript html={THEME_SCRIPT} />
       </head>
       <body className="min-h-full flex flex-col bg-canvas text-ink">
-        {children}
+        <PasswordGate>{children}</PasswordGate>
       </body>
     </html>
   );
 }
+

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import type { Product } from "@/data/products";
 import { CartDrawer } from "./CartDrawer";
-import { EcoReceiptRail } from "./EcoReceiptRail";
 import { FAQ } from "./FAQ";
 import { FavoritesSection } from "./FavoritesSection";
 import { FeaturedCarousel } from "./FeaturedCarousel";
@@ -46,7 +45,6 @@ function Shell() {
         onClose={() => setSelected(null)}
       />
       <CartDrawer />
-      <EcoReceiptRail />
       <RatingModal />
       <Toasts />
       <GroveOverlay />

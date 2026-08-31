@@ -21,7 +21,7 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === "1234") {
+    if (password === "3572") {
       sessionStorage.setItem("ecomart_site_access", "granted");
       setIsAuthenticated(true);
       setError(false);
